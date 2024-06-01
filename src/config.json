@@ -4,7 +4,7 @@
     "streamOpts": {
         "width": 1280,
         "height": 720,
-        "fps": 30,
+        "fps": 60,
         "bitrateKbps": 1000,
         "maxBitrateKbps": 2500,
         "hardware_acceleration": false,
