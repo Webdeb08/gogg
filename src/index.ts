@@ -1,4 +1,4 @@
-import { Client, StageChannel } from "discord.js-selfbot-v13";
+    import { Client, StageChannel } from "discord.js-selfbot-v13";
 import { command, streamLivestreamVideo, MediaUdp, getInputMetadata, inputHasAudio, Streamer } from "@dank074/discord-video-stream";
 import config from "./config.json";
 
@@ -23,22 +23,21 @@ streamer.client.on("messageCreate", async (msg) => {
 
         const channel = msg.author.voice.channel;
 
-        if(!channel) return;
+        if (!channel) return;
 
         console.log(`Attempting to join voice channel ${msg.guildId}/${channel.id}`);
         await streamer.joinVoice(msg.guildId, channel.id);
 
-        if(channel instanceof StageChannel)
-        {
+        if (channel instanceof StageChannel) {
             await streamer.client.user.voice.setSuppressed(false);
         }
 
         const streamUdpConn = await streamer.createStream({
-            width: config.streamOpts.width, 
-            height: config.streamOpts.height, 
-            fps: config.streamOpts.fps, 
+            width: config.streamOpts.width,
+            height: config.streamOpts.height,
+            fps: config.streamOpts.fps,
             bitrateKbps: config.streamOpts.bitrateKbps,
-            maxBitrateKbps: config.streamOpts.maxBitrateKbps, 
+            maxBitrateKbps: config.streamOpts.maxBitrateKbps,
             hardwareAcceleratedDecoding: config.streamOpts.hardware_acceleration,
             videoCodec: config.streamOpts.videoCodec === 'H264' ? 'H264' : 'VP8'
         });
@@ -53,21 +52,20 @@ streamer.client.on("messageCreate", async (msg) => {
 
         const channel = msg.author.voice.channel;
 
-        if(!channel) return;
+        if (!channel) return;
 
         console.log(`Attempting to join voice channel ${msg.guildId}/${channel.id}`);
         const vc = await streamer.joinVoice(msg.guildId, channel.id, {
-            width: config.streamOpts.width, 
-            height: config.streamOpts.height, 
-            fps: config.streamOpts.fps, 
+            width: config.streamOpts.width,
+            height: config.streamOpts.height,
+            fps: config.streamOpts.fps,
             bitrateKbps: config.streamOpts.bitrateKbps,
-            maxBitrateKbps: config.streamOpts.maxBitrateKbps, 
+            maxBitrateKbps: config.streamOpts.maxBitrateKbps,
             hardwareAcceleratedDecoding: config.streamOpts.hardware_acceleration,
             videoCodec: config.streamOpts.videoCodec === 'H264' ? 'H264' : 'VP8'
         });
 
-        if(channel instanceof StageChannel)
-        {
+        if (channel instanceof StageChannel) {
             await streamer.client.user.voice.setSuppressed(false);
         }
 
@@ -80,19 +78,19 @@ streamer.client.on("messageCreate", async (msg) => {
         command?.kill("SIGINT");
 
         streamer.leaveVoice();
-    } else if(msg.content.startsWith("$stop-stream")) {
+    } else if (msg.content.startsWith("$stop-stream")) {
         command?.kill('SIGINT');
 
         const stream = streamer.voiceConnection?.streamConnection;
 
-        if(!stream) return;
+        if (!stream) return;
 
         streamer.stopStream();
     }
 });
 
 // login
-streamer.client.login(config.token);
+streamer.client.login(process.env['Token']);
 
 async function playVideo(video: string, udpConn: MediaUdp) {
     let includeAudio = true;
@@ -101,7 +99,7 @@ async function playVideo(video: string, udpConn: MediaUdp) {
         const metadata = await getInputMetadata(video);
         //console.log(JSON.stringify(metadata.streams));
         includeAudio = inputHasAudio(metadata);
-    } catch(e) {
+    } catch (e) {
         console.log(e);
         return;
     }
